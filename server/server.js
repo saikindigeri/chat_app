@@ -9,10 +9,9 @@ const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: { origin: 'https://wsocket.vercel.app', methods: ['GET', 'POST'] },
-});
-
+ const io = new Server(server, {
+   cors: { origin: 'https://wsocket.vercel.app', methods: ['GET', 'POST'] },
+ });
 
 const SECRET_KEY = "secret_key"; 
 const PORT = process.env.PORT || 4000;
@@ -25,7 +24,7 @@ require('dotenv').config();
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  password: process.env.DB_PASSWORD, 
   database: process.env.DB_NAME,
 });  
  
@@ -361,3 +360,4 @@ app.get('/messages/:friendId', (req, res) => {
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+

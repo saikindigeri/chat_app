@@ -11,7 +11,8 @@ function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('https://wsocket-5.onrender.com/login', { username, password });
+    const res = await axios.post('https://wsocket-5.onrender.com/login', { username, password });
+     
       localStorage.setItem('token', res.data.token); // Store token in local storage
       localStorage.setItem('userId', res.data.userId); // Store userId in local storage
       navigate('/friends'); // Redirect to the friends page

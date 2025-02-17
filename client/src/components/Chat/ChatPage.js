@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import moment from 'moment';
+import { motion, AnimatePresence } from 'framer-motion';
 
 
 const socket = io('https://wsocket-5.onrender.com');
@@ -15,7 +16,7 @@ function ChatPage({ selectedFriend }) {
   const username = localStorage.getItem('username'); // Logged-in user's username
 
   useEffect(() => {
-    
+     
     const fetchMessages = async () => {
       try {
         const response = await axios.get(
@@ -72,63 +73,79 @@ function ChatPage({ selectedFriend }) {
   };
 console.log(messages,userId)
   return (
-    <div className=" flex flex-col h-screen max-w-4xl mx-auto bg-gradient-to-br from-blue-50 to-blue-100 shadow-2xl rounded-lg overflow-hidden">
-  <div className="bg-blue-900 p-4 shadow-md ">
-        <h2 className="text-2xl font-bold text-white text-center">
-          Chat with {selectedFriend.username}
-        </h2>
-      </div>
-
-
-  <div className=" flex-1 overflow-y-auto p-4 space-y-4 ">
-    {messages.map((msg, index) => (
-      <div
-        key={index}
-        className={`flex ${msg.sender_id == userId ? 'justify-end self-start rounded-bl-none' : 'justify-start'}`}
+  
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex flex-col h-screen max-w-4xl mx-auto bg-white shadow-2xl rounded-lg overflow-hidden"
       >
-        <div 
-        className={`max-w-[70%] break-words rounded-2xl px-4 py-3 shadow-md ${
-          msg.sender_id == userId
-            ? 'bg-blue-600 text-white rounded-br-none'
-            : 'bg-white text-gray-900 rounded-bl-none'
-        }`}
-
+        <motion.div 
+          initial={{ y: -50 }}
+          animate={{ y: 0 }}
+          className="bg-gradient-to-r from-blue-600 to-blue-800 p-4 shadow-lg"
         >
-          
-         
-          <p className="text-sm mb-1">{msg.text}</p>
-          <p className={`text-xs ${
-                msg.sender_id == userId ? 'text-white' : 'text-gray-500'
-              }`}>
-                {moment(msg.created_at).format('DD/MM/YYYY h:mm A')}
-              </p>
-
+          <h2 className="text-2xl font-bold text-white text-center tracking-wide">
+            Chat with {selectedFriend.username}
+          </h2>
+        </motion.div>
+  
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+          <AnimatePresence>
+            {messages.map((msg, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: msg.sender_id == userId ? 100 : -100 }}
+                transition={{ duration: 0.3 }}
+                className={`flex ${msg.sender_id == userId ? 'justify-end' : 'justify-start'}`}
+              >
+                <motion.div 
+                  whileHover={{ scale: 1.02 }}
+                  className={`max-w-[70%] break-words rounded-2xl px-4 py-3 shadow-md 
+                    ${msg.sender_id == userId
+                      ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-br-none'
+                      : 'bg-white text-gray-800 rounded-bl-none border border-gray-200'
+                    }`}
+                >
+                  <p className="text-sm mb-1 leading-relaxed">{msg.text}</p>
+                  <p className={`text-xs ${
+                    msg.sender_id == userId ? 'text-blue-100' : 'text-gray-500'
+                  }`}>
+                    {moment(msg.created_at).format('DD/MM/YYYY h:mm A')}
+                  </p>
+                </motion.div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
-      </div>
-    ))}
-  </div>
-
-  <div className="p-4 bg-white border-t border-gray-200">
-  <div className="flex space-x-2">
-
-    <input
-      type="text"
-      value={message}
-      onChange={(e) => setMessage(e.target.value)}
-      placeholder="Type a message..."
-      className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-    />
-    <button
-      onClick={handleSendMessage}
-      className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
-    >
-      Send
-    </button>
-  </div>
-</div>
-</div>
-
-  );
+  
+        <motion.div 
+          initial={{ y: 50 }}
+          animate={{ y: 0 }}
+          className="p-6 bg-white border-t border-gray-200 shadow-lg"
+        >
+          <div className="flex space-x-3">
+            <motion.input
+              whileFocus={{ scale: 1.01 }}
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Type a message..."
+              className="flex-1 px-6 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
+            />
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleSendMessage}
+              className="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 font-semibold shadow-md"
+            >
+              Send
+            </motion.button>
+          </div>
+        </motion.div>
+      </motion.div>
+    );
 }
 
 export default ChatPage;
