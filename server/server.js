@@ -11,7 +11,7 @@ const app = express();
 const server = http.createServer(app);
  const io = new Server(server, {
   cors: {
-    origin: ["https://wsocket.vercel.app", "http://localhost:5173"],
+    origin: ["https://wsocket.vercel.app", "http://localhost:3000"],
     methods: ["GET", "POST"],
   },
  });
