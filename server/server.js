@@ -10,7 +10,10 @@ const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
  const io = new Server(server, {
-   cors: { origin: 'https://wsocket.vercel.app', methods: ['GET', 'POST'] },
+  cors: {
+    origin: ["https://wsocket.vercel.app", "http://localhost:5173"],
+    methods: ["GET", "POST"],
+  },
  });
 
 const SECRET_KEY = "secret_key"; 
