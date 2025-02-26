@@ -4,18 +4,24 @@ import Header from "../Header";
 
 const Notifications = () => {
   const [friendRequests, setFriendRequests] = useState([]);
-
+  const [error, setError] = useState("");
+  
   useEffect(() => {
-    const fetchFriendRequests = async () => {
+    const fetchRequests = async () => {
       try {
-        const response = await axios.get("https://chat-app-9l0g.onrender.com/friend-requests");
+        const response = await axios.get(
+          `https://chat-app-9l0g.onrender.com/friend-requests/${userId}`
+        );
         setFriendRequests(response.data);
-      } catch (error) {
-        console.error("Error fetching friend requests:", error);
+      } catch (err) {
+        setError("Error fetching friend requests.");
       }
     };
-    fetchFriendRequests();
+    fetchRequests();
   }, []);
+
+
+
 
   const handleAccept = async (requestId) => {
     try {
