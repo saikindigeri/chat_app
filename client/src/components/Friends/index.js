@@ -13,16 +13,7 @@ const Friends = () => {
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
-    const fetchRequests = async () => {
-      try {
-        const response = await axios.get(
-          `https://chat-app-9l0g.onrender.com/friend-requests/${userId}`
-        );
-        setFriendRequests(response.data);
-      } catch (err) {
-        setError("Error fetching friend requests.");
-      }
-    };
+   
 
     const fetchFriends = async () => {
       try {
@@ -35,7 +26,7 @@ const Friends = () => {
       }
     };
 
-    fetchRequests();
+ 
     fetchFriends();
   }, [userId]);
 

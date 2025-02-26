@@ -5,7 +5,7 @@ import Header from "../Header";
 const Notifications = () => {
   const [friendRequests, setFriendRequests] = useState([]);
   const [error, setError] = useState("");
-  
+  const userId = localStorage.getItem("userId");
   useEffect(() => {
     const fetchRequests = async () => {
       try {
@@ -18,7 +18,7 @@ const Notifications = () => {
       }
     };
     fetchRequests();
-  }, []);
+  }, [[userId]]);
 
 
 
