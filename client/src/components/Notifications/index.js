@@ -8,7 +8,7 @@ const Notifications = () => {
   useEffect(() => {
     const fetchFriendRequests = async () => {
       try {
-        const response = await axios.get("https://wsocket-5.onrender.com/friend-requests");
+        const response = await axios.get("https://chat-app-9l0g.onrender.com/friend-requests");
         setFriendRequests(response.data);
       } catch (error) {
         console.error("Error fetching friend requests:", error);
@@ -19,7 +19,7 @@ const Notifications = () => {
 
   const handleAccept = async (requestId) => {
     try {
-      await axios.post("https://wsocket-5.onrender.com/accept-request", { requestId });
+      await axios.post("https://chat-app-9l0g.onrender.com/accept-request", { requestId });
       setFriendRequests((prev) => prev.filter((request) => request.id !== requestId));
       alert("Friend request accepted ✅");
     } catch (err) {
@@ -29,7 +29,7 @@ const Notifications = () => {
 
   const handleDecline = async (requestId) => {
     try {
-      await axios.post("https://wsocket-5.onrender.com/decline-request", { requestId });
+      await axios.post("https://chat-app-9l0g.onrender.com/decline-request", { requestId });
       setFriendRequests((prev) => prev.filter((request) => request.id !== requestId));
       alert("Friend request declined ❌");
     } catch (err) {

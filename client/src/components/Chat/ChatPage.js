@@ -6,7 +6,7 @@ import moment from 'moment';
 import { motion, AnimatePresence } from 'framer-motion';
 
 
-const socket = io('https://wsocket-5.onrender.com');
+const socket = io('https://chat-app-9l0g.onrender.com');
 
 function ChatPage({ selectedFriend }) {
   const [message, setMessage] = useState('');
@@ -20,7 +20,7 @@ function ChatPage({ selectedFriend }) {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(
-          `https://wsocket-5.onrender.com/messages/${selectedFriend.id}`,
+          `https://chat-app-9l0g.onrender.com/messages/${selectedFriend.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

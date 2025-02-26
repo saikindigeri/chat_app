@@ -12,7 +12,7 @@ function RegisterPage() {
     e.preventDefault();
     try {
       //await axios.post('https://wsocket-5.onrender.com/register', { username, password });
-      await axios.post("http://localhost:4000/register", {
+      await axios.post("https://chat-app-9l0g.onrender.com/register", {
         username,
         password,
       });

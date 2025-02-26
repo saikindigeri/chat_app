@@ -11,7 +11,7 @@ function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("https://wsocket-5.onrender.com/login", {
+      const res = await axios.post("https://chat-app-9l0g.onrender.com/login", {
         username,
         password,
       });

@@ -16,7 +16,7 @@ const Friends = () => {
     const fetchRequests = async () => {
       try {
         const response = await axios.get(
-          `https://wsocket-5.onrender.com/friend-requests/${userId}`
+          `https://chat-app-9l0g.onrender.com/friend-requests/${userId}`
         );
         setFriendRequests(response.data);
       } catch (err) {
@@ -27,7 +27,7 @@ const Friends = () => {
     const fetchFriends = async () => {
       try {
         const response = await axios.get(
-          `https://wsocket-5.onrender.com/friends/${userId}`
+          `https://chat-app-9l0g.onrender.com/friends/${userId}`
         );
         setFriends(response.data);
       } catch (err) {
@@ -41,7 +41,7 @@ const Friends = () => {
 
   const handleAccept = async (requestId) => {
     try {
-      await axios.post("https://wsocket-5.onrender.com/accept-request", {
+      await axios.post("https://chat-app-9l0g.onrender.com/accept-request", {
         requestId,
       });
       setFriendRequests((prev) =>
@@ -55,7 +55,7 @@ const Friends = () => {
 
   const handleDecline = async (requestId) => {
     try {
-      await axios.post("https://wsocket-5.onrender.com/decline-request", {
+      await axios.post("https://chat-app-9l0g.onrender.com/decline-request", {
         requestId,
       });
       setFriendRequests((prev) =>

@@ -22,7 +22,7 @@ function Users() {
 
       try {
         const response = await axios.get(
-          "https://wsocket-5.onrender.com/users",
+          "https://chat-app-9l0g.onrender.com/users",
           {
             headers: {
               Authorization: token,
@@ -33,7 +33,7 @@ function Users() {
         setUsers(response.data);
 
         const friendsResponse = await axios.get(
-          `https://wsocket-3.onrender.com/friends/${userId}`,
+          `https://chat-app-9l0g.onrender.com/friends/${userId}`,
           {
             headers: {
               Authorization: token,
@@ -42,7 +42,7 @@ function Users() {
         );
 
         const requestsResponse = await axios.get(
-          `https://wsocket-5.onrender.com/pending-requests/${userId}`,
+          `https://chat-app-9l0g.onrender.com/pending-requests/${userId}`,
           {
             headers: {
               Authorization: token,
@@ -82,7 +82,7 @@ function Users() {
   const sendFriendRequest = async (receiverId) => {
     try {
       const response = await axios.post(
-        "https://wsocket-5.onrender.com/send-request",
+        "https://chat-app-9l0g.onrender.com/send-request",
         { senderId: userId, receiverId },
         {
           headers: {
