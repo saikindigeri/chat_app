@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "../Header";
 
-function FriendRequest() {
+function Users() {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [error, setError] = useState(null);
@@ -154,4 +154,4 @@ function FriendRequest() {
   );
 }
 
-export default FriendRequest;
+export default Users;

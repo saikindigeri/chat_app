@@ -81,7 +81,7 @@ export default function Header() {
       >
         <div className="flex items-center">
           <a
-            href="#"
+            href="/"
             className="flex items-center space-x-2 hover:scale-105 transition-transform"
           >
             <span className="sr-only">Your Company</span>
@@ -118,10 +118,10 @@ export default function Header() {
             href="/friends"
             className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all font-medium"
           >
-            Requests
+            Friends
           </a>
           <a
-            href="/requests"
+            href="/users"
             className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all font-medium"
           >
             Users
@@ -133,7 +133,7 @@ export default function Header() {
             Groups
           </a>
           <a
-            href="/under-construction"
+            href="/notifications"
             className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all font-medium"
           >
             Notifications

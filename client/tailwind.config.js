@@ -4,11 +4,14 @@ module.exports = {
     './src/**/*.{js,jsx,ts,tsx}', // Adjust paths as per your project
   ],
   theme: {
+    screens: {
+      sm: "375px",
+      md: "768px",
+      lg: "1200px",
+    },
     extend: {
       fontFamily: {
-        'playfair': ['"Playfair Display"', 'serif'],
-        'montserrat': ['Montserrat', 'sans-serif'],
-        'inter': ['Inter', 'sans-serif'],
+        sans: ['DM Sans', 'sans-serif'],
       },
     },
   },
