@@ -1,26 +1,23 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("https://chat-app-9l0g.onrender.com/login", {
-        username,
-        password,
-      });
-
-      localStorage.setItem("token", res.data.token); // Store token in local storage
-      localStorage.setItem("userId", res.data.userId); // Store userId in local storage
-      navigate("/friends"); // Redirect to the friends page
+    const res = await axios.post('https://wsocket-5.onrender.com/login', { username, password });
+     
+      localStorage.setItem('token', res.data.token); // Store token in local storage
+      localStorage.setItem('userId', res.data.userId); // Store userId in local storage
+      navigate('/friends'); // Redirect to the friends page
     } catch (err) {
-      setErrorMessage("Invalid credentials");
+      setErrorMessage('Invalid credentials');
     }
   };
 
@@ -40,11 +37,8 @@ function LoginPage() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm/6 font-medium text-gray-900"
-            >
-              Username
+            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
+             Username
             </label>
             <div className="mt-2">
               <input
@@ -61,17 +55,11 @@ function LoginPage() {
 
           <div>
             <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm/6 font-medium text-gray-900"
-              >
+              <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
                 Password
               </label>
               <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-semibold text-indigo-600 hover:text-indigo-500"
-                >
+                <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
                   Forgot password?
                 </a>
               </div>
@@ -100,17 +88,12 @@ function LoginPage() {
         </form>
 
         {errorMessage && (
-          <p className="mt-4 text-center text-sm text-red-600">
-            {errorMessage}
-          </p>
+          <p className="mt-4 text-center text-sm text-red-600">{errorMessage}</p>
         )}
 
         <p className="mt-10 text-center text-sm/6 text-gray-500">
-          Not a member?{" "}
-          <a
-            href="/register"
-            className="font-semibold text-indigo-600 hover:text-indigo-500"
-          >
+          Not a member?{' '}
+          <a href="/register" className="font-semibold text-indigo-600 hover:text-indigo-500">
             Register here
           </a>
         </p>

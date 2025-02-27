@@ -1,24 +1,21 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
       //await axios.post('https://wsocket-5.onrender.com/register', { username, password });
-      await axios.post("https://chat-app-9l0g.onrender.com/register", {
-        username,
-        password,
-      });
-      navigate("/login"); // Redirect to login page after successful registration
+      await axios.post('http://localhost:4000/register', { username, password });
+      navigate('/login'); // Redirect to login page after successful registration
     } catch (err) {
-      setErrorMessage("Error during registration");
+      setErrorMessage('Error during registration');
     }
   };
 
@@ -38,10 +35,7 @@ function RegisterPage() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handleRegister} className="space-y-6">
           <div>
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-900"
-            >
+            <label htmlFor="username" className="block text-sm font-medium text-gray-900">
               Username
             </label>
             <div className="mt-2">
@@ -58,10 +52,7 @@ function RegisterPage() {
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-900"
-            >
+            <label htmlFor="password" className="block text-sm font-medium text-gray-900">
               Password
             </label>
             <div className="mt-2">
@@ -88,17 +79,12 @@ function RegisterPage() {
         </form>
 
         {errorMessage && (
-          <p className="mt-4 text-center text-sm text-red-600">
-            {errorMessage}
-          </p>
+          <p className="mt-4 text-center text-sm text-red-600">{errorMessage}</p>
         )}
 
         <p className="mt-10 text-center text-sm text-gray-500">
-          Already have an account?{" "}
-          <a
-            href="/login"
-            className="font-semibold text-indigo-600 hover:text-indigo-500"
-          >
+          Already have an account?{' '}
+          <a href="/login" className="font-semibold text-indigo-600 hover:text-indigo-500">
             Login here
           </a>
         </p>
