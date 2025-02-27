@@ -11,7 +11,7 @@ function Users() {
   const [pendingRequests, setPendingRequests] = useState([]);
 
   const userId = localStorage.getItem("userId");
-
+console.log(users)
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
@@ -22,7 +22,7 @@ function Users() {
 
       try {
         const response = await axios.get(
-          "https://chat-app-9l0g.onrender.com/users",
+          "http://localhost:4000/users",
           {
             headers: {
               Authorization: token,
@@ -33,7 +33,7 @@ function Users() {
         setUsers(response.data);
 
         const friendsResponse = await axios.get(
-          `https://chat-app-9l0g.onrender.com/friends/${userId}`,
+          `http://localhost:4000/friends/${userId}`,
           {
             headers: {
               Authorization: token,
@@ -42,7 +42,7 @@ function Users() {
         );
 
         const requestsResponse = await axios.get(
-          `https://chat-app-9l0g.onrender.com/pending-requests/${userId}`,
+          `http://localhost:4000/pending-requests/${userId}`,
           {
             headers: {
               Authorization: token,
@@ -82,7 +82,7 @@ function Users() {
   const sendFriendRequest = async (receiverId) => {
     try {
       const response = await axios.post(
-        "https://chat-app-9l0g.onrender.com/send-request",
+        "http://localhost:4000/send-request",
         { senderId: userId, receiverId },
         {
           headers: {
@@ -130,7 +130,7 @@ function Users() {
                 <span className="text-gray-700">{user.username}</span>
                 {!isFriendOrRequested(user.id) ? (
                   <button
-                    onClick={() => sendFriendRequest(user.id)}
+                    onClick={() => sendFriendRequest(user._id)}
                     className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none"
                   >
                     Send Request

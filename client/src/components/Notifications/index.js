@@ -6,6 +6,12 @@ const Notifications = () => {
   const [friendRequests, setFriendRequests] = useState([]);
   const [error, setError] = useState("");
   const userId = localStorage.getItem("userId");
+  console.log(friendRequests)
+
+
+
+
+
   useEffect(() => {
     const fetchRequests = async () => {
       try {
@@ -18,30 +24,40 @@ const Notifications = () => {
       }
     };
     fetchRequests();
-  }, [[userId]]);
+  }, [userId]); // Runs only when `userId` changes
+  
+    const handleAccept = async (requestId) => {
+      try {
+        const response = await axios.post("https://chat-app-9l0g.onrender.com/accept-request", { requestId });
+    
+        if (response.status === 200) {
+          setFriendRequests((prev) => prev.filter((request) => request.id !== requestId));
+          alert("Friend request accepted ✅");
+        }
+      } catch (err) {
+        alert("❌ Error accepting friend request.");
+      }
+    };
+    
+    const handleDecline = async (requestId) => {
+      try {
+        const response = await axios.post("https://chat-app-9l0g.onrender.com/decline-request", { requestId });
+    
+        if (response.status === 200) {
+          setFriendRequests((prev) => prev.filter((request) => request.id !== requestId));
+          alert("Friend request declined ❌");
+        }
+      } catch (err) {
+        alert("❌ Error declining friend request.");
+      }
+    };
+    
+   
 
 
 
 
-  const handleAccept = async (requestId) => {
-    try {
-      await axios.post("https://chat-app-9l0g.onrender.com/accept-request", { requestId });
-      setFriendRequests((prev) => prev.filter((request) => request.id !== requestId));
-      alert("Friend request accepted ✅");
-    } catch (err) {
-      alert("❌ Error accepting friend request.");
-    }
-  };
 
-  const handleDecline = async (requestId) => {
-    try {
-      await axios.post("https://chat-app-9l0g.onrender.com/decline-request", { requestId });
-      setFriendRequests((prev) => prev.filter((request) => request.id !== requestId));
-      alert("Friend request declined ❌");
-    } catch (err) {
-      alert("❌ Error declining friend request.");
-    }
-  };
 
   return (
     <>
