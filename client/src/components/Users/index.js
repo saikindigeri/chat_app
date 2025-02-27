@@ -22,7 +22,7 @@ console.log(users)
 
       try {
         const response = await axios.get(
-          "http://localhost:4000/users",
+          "https://chat-app-9l0g.onrender.com/users",
           {
             headers: {
               Authorization: token,
@@ -33,7 +33,7 @@ console.log(users)
         setUsers(response.data);
 
         const friendsResponse = await axios.get(
-          `http://localhost:4000/friends/${userId}`,
+          `https://chat-app-9l0g.onrender.com/friends/${userId}`,
           {
             headers: {
               Authorization: token,
@@ -42,7 +42,7 @@ console.log(users)
         );
 
         const requestsResponse = await axios.get(
-          `http://localhost:4000/pending-requests/${userId}`,
+          `https://chat-app-9l0g.onrender.com/pending-requests/${userId}`,
           {
             headers: {
               Authorization: token,
@@ -82,7 +82,7 @@ console.log(users)
   const sendFriendRequest = async (receiverId) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/send-request",
+        "https://chat-app-9l0g.onrender.com/send-request",
         { senderId: userId, receiverId },
         {
           headers: {
