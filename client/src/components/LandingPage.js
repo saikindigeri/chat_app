@@ -182,6 +182,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -194,6 +195,7 @@ export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userId, setUserId] = useState(null);
   const router = useRouter();
+  const navigate=useNavigate();
 
   useEffect(() => {
     // Check if user is logged in
@@ -205,9 +207,9 @@ export default function LandingPage() {
 
   const handleStartChatting = () => {
     if (userId) {
-      router.push("/friends"); // Redirect logged-in users to Friends page
+      navigate("/friends"); // Redirect logged-in users to Friends page
     } else {
-      router.push("/login"); // Redirect unauthenticated users to Login page
+      navigate("/login"); // Redirect unauthenticated users to Login page
     }
   };
 
