@@ -80,9 +80,9 @@ export default function Header() {
           </Popover>
 
           <a href="/friends" className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all font-medium">
-            Requests
+            Friends
           </a>
-          <a href="/requests" className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all font-medium">
+          <a href="/users" className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all font-medium">
             Users
           </a>
           <a href="/under-construction" className="text-gray-700 hover:text-gray-900 hover:scale-105 transition-all font-medium">
@@ -126,10 +126,10 @@ export default function Header() {
           href="/friends"
           className="block rounded-lg px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50"
         >
-          Requests
+          Friends
         </a>
         <a
-          href="/requests"
+          href="/users"
           className="block rounded-lg px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50"
         >
           Users

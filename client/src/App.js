@@ -45,7 +45,7 @@ function AppContent() {
 
         {/* Protected Routes */}
         <Route
-          path="/requests"
+          path="/users"
           element={
             <ProtectedRoute isLoginRoute={false}>
               <FriendRequests />
