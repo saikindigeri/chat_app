@@ -130,7 +130,7 @@ console.log(users)
                 <span className="text-gray-700">{user.username}</span>
                 {!isFriendOrRequested(user.id) ? (
                   <button
-                    onClick={() => sendFriendRequest(user._id)}
+                    onClick={() => sendFriendRequest(user.id)}
                     className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none"
                   >
                     Send Request
