@@ -30,7 +30,7 @@ function FriendRequest() {
         setUsers(response.data);
 
         const friendsResponse = await axios.get(
-          `https://wsocket-3.onrender.com/friends/${userId}`,
+          `https://wsocket-5.onrender.com/friends/${userId}`,
           {
             headers: {
               Authorization: token,
