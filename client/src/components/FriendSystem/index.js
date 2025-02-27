@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ChatPage from '../Chat/ChatPage';
 import axios from 'axios';
 import Header from '../Header';
+import toast from 'react-hot-toast';
 
 const FriendSystem = () => {
   const [friendRequests, setFriendRequests] = useState([]);
@@ -39,7 +40,7 @@ const FriendSystem = () => {
     try {
       await axios.post('https://wsocket-5.onrender.com/accept-request', { requestId });
       setFriendRequests((prev) => prev.filter((request) => request.id !== requestId));
-      alert('Friend request accepted');
+     toast.success("Friend Request accepted")
     } catch (err) {
       alert('Error accepting friend request.');
     }
@@ -49,7 +50,7 @@ const FriendSystem = () => {
     try {
       await axios.post('https://wsocket-5.onrender.com/decline-request', { requestId });
       setFriendRequests((prev) => prev.filter((request) => request.id !== requestId));
-      alert('Friend request declined');
+     toast.success("Friend Request Declined")
     } catch (err) {
       alert('Error declining friend request.');
     }

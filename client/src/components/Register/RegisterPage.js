@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import toast, {Toaster} from 'react-hot-toast';
+
 
 function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -11,16 +13,19 @@ function RegisterPage() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      //await axios.post('https://wsocket-5.onrender.com/register', { username, password });
-      await axios.post('http://localhost:4000/register', { username, password });
+      await axios.post('https://wsocket-5.onrender.com/register', { username, password });
+    toast.success(
+      "Registered Successfully"
+    )
       navigate('/login'); // Redirect to login page after successful registration
     } catch (err) {
-      setErrorMessage('Error during registration');
+      toast.error("Registration Failed")
     }
   };
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div><Toaster/></div>
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           alt="Your Company"
@@ -78,10 +83,7 @@ function RegisterPage() {
           </div>
         </form>
 
-        {errorMessage && (
-          <p className="mt-4 text-center text-sm text-red-600">{errorMessage}</p>
-        )}
-
+      
         <p className="mt-10 text-center text-sm text-gray-500">
           Already have an account?{' '}
           <a href="/login" className="font-semibold text-indigo-600 hover:text-indigo-500">

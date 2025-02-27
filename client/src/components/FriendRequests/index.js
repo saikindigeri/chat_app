@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../Header';
+import toast from 'react-hot-toast';
 
 function FriendRequest() {
   const [users, setUsers] = useState([]);
@@ -88,7 +89,7 @@ function FriendRequest() {
         }
       );
 
-      alert(response.data.message);
+      toast.success("Friend Request Sent")
 
       setPendingRequests((prev) => [
         ...prev,

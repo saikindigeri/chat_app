@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import toast, {Toaster} from 'react-hot-toast'
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -14,7 +15,10 @@ function LoginPage() {
     const res = await axios.post('https://wsocket-5.onrender.com/login', { username, password });
      
       localStorage.setItem('token', res.data.token); // Store token in local storage
-      localStorage.setItem('userId', res.data.userId); // Store userId in local storage
+      localStorage.setItem('userId', res.data.userId);
+      toast.success("Login Success"
+      )
+      // Store userId in local storage
       navigate('/friends'); // Redirect to the friends page
     } catch (err) {
       setErrorMessage('Invalid credentials');
@@ -23,6 +27,7 @@ function LoginPage() {
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+<div><Toaster/></div>
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           alt="Your Company"
