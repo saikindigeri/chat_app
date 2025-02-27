@@ -48,7 +48,7 @@ export default function Header() {
     <header className="fixed top-0 left-0 w-full backdrop-blur-md bg-white/30 border-b border-white/20 text-gray-800 p-3 shadow-lg z-50">
       <nav aria-label="Global" className="mx-auto flex max-w-6xl items-center justify-between px-4">
         <div className="flex items-center">
-          <a href="#" className="flex items-center space-x-2 hover:scale-105 transition-transform">
+          <a href="/" className="flex items-center space-x-2 hover:scale-105 transition-transform">
             <span className="sr-only">Your Company</span>
             <img
               alt=""
