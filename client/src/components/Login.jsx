@@ -6,6 +6,7 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [token, setToken] = useState(localStorage.getItem('token') || null);
+  //eslint-disable-next-line
   const [userId, setUserId] = useState(localStorage.getItem('userId')||null);
   const navigate = useNavigate();
 
@@ -21,9 +22,9 @@ function Login() {
       localStorage.setItem('userId',res.data.userId);
       setToken(res.data.token);
       setUserId(res.data.userId);
-      console.log(res.data.token)
+      console.log(res.data.token);
       console.log(res.data.userId);
-    
+
       navigate('/chat');
     } catch (err) {
       console.error(err.response?.data?.message || 'Login failed');

@@ -11,7 +11,9 @@ function Chat() {
   const [input, setInput] = useState('');
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [token] = useState(localStorage.getItem('token'));
-  const [userId] = useState(localStorage.getItem('userId') || null);
+  const userId = localStorage.getItem('userId');
+  console.log('userId:', userId);
+
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -19,25 +21,39 @@ function Chat() {
     socket.emit('join', userId);
 
     socket.on('chat message', (msg) => {
-        if (msg.senderId !== userId) { // Skip if sender is current user
-          setMessages((prev) => [...prev, msg]);
-        }
-      });
+      console.log('Received msg:', msg);
+      if (String(msg.sender_id) !== String(userId)) { // Correct condition
+        setMessages((prev) => [...prev, msg]);
+      }
+    });
+
     return () => socket.off('chat message');
   }, [token, userId]);
 
+  // Fetch messages when selectedFriend changes
   useEffect(() => {
     if (selectedFriend) {
-      axios.get(`http://localhost:4000/messages/${selectedFriend._id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      }).then((res) => setMessages(res.data));
+      axios
+        .get(`http://localhost:4000/messages/${selectedFriend._id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          console.log('Fetched messages:', res.data);
+          setMessages(res.data);
+        })
+        .catch((err) => console.error('Error fetching messages:', err));
     }
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [selectedFriend, token]);
+
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const sendMessage = () => {
     if (input.trim() && selectedFriend) {
-      const msg = { senderId: userId, receiverId: selectedFriend._id, text: input };
+      const msg = { sender_id: userId, receiver_id: selectedFriend._id, text: input}; // Fixed to sender_id
+      console.log('Sending msg:', msg);
       socket.emit('chat message', msg);
       setMessages((prev) => [...prev, { ...msg, created_at: new Date() }]);
       setInput('');
@@ -60,24 +76,28 @@ function Chat() {
           Logout
         </button>
       </div>
-      <div className="w-3/4 flex flex-col">
+      <div className="w-3/4 flex flex-col h-screen">
         {selectedFriend ? (
           <>
-            <h3 className="p-4 bg-blue-500 text-white text-lg">
+            <h3 className="p-4 bg-blue-500 text-white text-lg flex-shrink-0">
               Chat with {selectedFriend.username}
             </h3>
-            <div className="flex-1 p-4 overflow-y-auto">
+            <div className="flex-1 p-4 overflow-y-auto flex flex-col gap-2">
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
-                  className={`mb-2 p-2 rounded ${msg.senderId === userId ? 'bg-blue-100 text-right' : 'bg-gray-100'}`}
+                  className={`p-2 rounded max-w-[70%] ${
+                    String(msg.sender_id) === String(userId)
+                      ? 'bg-blue-100 self-end text-right'
+                      : 'bg-gray-400 self-start text-left'
+                  }`}
                 >
                   {msg.text}
                 </div>
               ))}
               <div ref={messagesEndRef} />
             </div>
-            <div className="p-4 flex">
+            <div className="p-4 flex flex-shrink-0">
               <input
                 type="text"
                 value={input}

@@ -421,8 +421,8 @@ const friendRequestSchema = new mongoose.Schema({
 const FriendRequest = mongoose.model('FriendRequest', friendRequestSchema);
 
 const messageSchema = new mongoose.Schema({
-  sender_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
-  receiver_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+  sender_id: { type: String, required: true },
+  receiver_id: { type: String, required: true },
   text: { type: String, required: true },
   created_at: { type: Date, default: Date.now },
 });
@@ -587,24 +587,28 @@ app.get('/messages/:friendId', authenticateToken, async (req, res) => {
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
-  // Join user-specific room
   socket.on('join', (userId) => {
     socket.join(userId);
     console.log(`User ${userId} joined their room`);
   });
 
-  socket.on('chat message', async ({ senderId, receiverId, text }) => {
+  socket.on('chat message', async (msg) => { // Raw data accept chey
+    console.log('Received raw msg:', msg); // Debug log
     try {
-      const message = new Message({ sender_id: senderId, receiver_id: receiverId, text });
+      const { sender_id, receiver_id, text } = msg; // Destructure from raw msg
+      if (!sender_id || !receiver_id) {
+        throw new Error('Missing sender_id or receiver_id');
+      }
+      const message = new Message({ sender_id, receiver_id, text });
       await message.save();
-      io.to(senderId).to(receiverId).emit('chat message', {
-        senderId,
-        receiverId,
+      io.to(receiver_id).to(sender_id).emit('chat message', {
+        sender_id,
+        receiver_id,
         text,
         created_at: message.created_at,
       });
     } catch (err) {
-      console.error('Error storing message:', err);
+      console.errorprix('Error storing message:', err);
     }
   });
 
@@ -612,7 +616,6 @@ io.on('connection', (socket) => {
     console.log('User disconnected:', socket.id);
   });
 });
-
 // Start Server
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
