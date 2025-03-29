@@ -5,7 +5,7 @@ import FriendList from './FriendList';
 import FriendRequests from './FriendRequests';
 import { UserIcon, UserPlusIcon, UsersIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/solid';
 
-const socket = io('http://localhost:4000');
+const socket = io('https://chat-app-2-v2fo.onrender.com');
 
 // AllUsers Component (unchanged for brevity)
 function AllUsers({ userId, token }) {
@@ -16,7 +16,7 @@ function AllUsers({ userId, token }) {
   useEffect(() => {
     if (token && userId) {
       axios
-        .get('http://localhost:4000/api/users', {
+        .get('https://chat-app-2-v2fo.onrender.com/api/users', {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => setUsers(res.data.filter((u) => u._id !== userId)))
@@ -32,7 +32,7 @@ function AllUsers({ userId, token }) {
   const sendRequest = async (receiverId) => {
     try {
       const res = await axios.post(
-        'http://localhost:4000/api/send-request',
+        'https://chat-app-2-v2fo.onrender.com/api/send-request',
         { receiverId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -128,7 +128,7 @@ function Chat() {
   useEffect(() => {
     if (selectedFriend) {
       axios
-        .get(`http://localhost:4000/api/messages/${selectedFriend._id}`, {
+        .get(`https://chat-app-2-v2fo.onrender.com/api/messages/${selectedFriend._id}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
