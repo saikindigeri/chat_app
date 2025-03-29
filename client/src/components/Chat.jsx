@@ -16,34 +16,23 @@ function AllUsers({ userId, token }) {
   useEffect(() => {
     if (token && userId) {
       axios
-        .get('http://localhost:4000/users', {
+        .get('http://localhost:4000/api/users', {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => setUsers(res.data.filter((u) => u._id !== userId)))
         .catch((err) => console.error('Error fetching users:', err));
 
-      axios
-        .get('http://localhost:4000/friend-requests/accepted', {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((res) =>
-          setFriends(res.data.map((f) => (f.sender_id === userId ? f.receiver_id : f.sender_id)))
-        )
-        .catch((err) => console.error('Error fetching friends:', err));
+     
 
-      axios
-        .get('http://localhost:4000/friend-requests/pending', {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((res) => setPendingRequests(res.data.map((r) => r.receiver_id)))
-        .catch((err) => console.error('Error fetching pending requests:', err));
+
+    
     }
   }, [token, userId]);
 
   const sendRequest = async (receiverId) => {
     try {
       const res = await axios.post(
-        'http://localhost:4000/send-request',
+        'http://localhost:4000/api/send-request',
         { receiverId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -139,7 +128,7 @@ function Chat() {
   useEffect(() => {
     if (selectedFriend) {
       axios
-        .get(`http://localhost:4000/messages/${selectedFriend._id}`, {
+        .get(`http://localhost:4000/api/messages/${selectedFriend._id}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
