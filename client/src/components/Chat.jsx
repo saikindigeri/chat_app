@@ -110,7 +110,7 @@ function Chat() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="p-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-xl font-semibold flex-shrink-0 shadow-md"
+        className="p-4 bg-gradient-to-r from-purple-600 via-indigo-500 to-blue-600 text-white text-xl font-semibold flex-shrink-0 shadow-md"
       >
         Chat with {selectedFriend.username}
       </motion.h3>

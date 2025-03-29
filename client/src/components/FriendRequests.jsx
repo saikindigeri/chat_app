@@ -40,7 +40,7 @@ function FriendRequests({ userId, token }) {
         .then((res) => setPendingRequests(res.data.map((r) => r.receiver_id)))
         .catch((err) => console.error('Error fetching pending requests:', err));
     }
-  }, [token, userId]);
+  }, [token, userId,]);
 
   const sendRequest = async (receiverId) => {
     try {
