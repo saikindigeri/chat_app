@@ -13,14 +13,14 @@ function FriendRequests({ userId, token }) {
   useEffect(() => {
     if (token && userId) {
       axios
-        .get(`http://localhost:4000/api/friend-requests/${userId}`, {
+        .get(`https://chat-app-2-v2fo.onrender.com/api/friend-requests/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => setRequests(res.data))
         .catch((err) => console.error('Error fetching requests:', err));
 
       axios
-        .get('http://localhost:4000/api/users', {
+        .get('https://chat-app-2-v2fo.onrender.com/api/users', {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => setUsers(res.data))
@@ -35,7 +35,7 @@ function FriendRequests({ userId, token }) {
   const sendRequest = async (receiverId) => {
     try {
       const res = await axios.post(
-        'http://localhost:4000/api/send-request',
+        'https://chat-app-2-v2fo.onrender.com/api/send-request',
         { receiverId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -61,7 +61,7 @@ function FriendRequests({ userId, token }) {
   const acceptRequest = (requestId) => {
     axios
       .post(
-        'http://localhost:4000/api/accept-request',
+        'https://chat-app-2-v2fo.onrender.com/api/accept-request',
         { requestId },
         { headers: { Authorization: `Bearer ${token}` } }
       )
@@ -77,7 +77,7 @@ function FriendRequests({ userId, token }) {
   const declineRequest = (requestId) => {
     axios
       .post(
-        'http://localhost:4000/api/decline-request',
+        'https://chat-app-2-v2fo.onrender.com/api/decline-request',
         { requestId },
         { headers: { Authorization: `Bearer ${token}` } }
       )

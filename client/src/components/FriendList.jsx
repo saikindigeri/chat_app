@@ -12,7 +12,7 @@ function FriendList({ setSelectedFriend }) {
     if (token && userId) {
       console.log('Fetching friends with:', { token, userId });
       axios
-        .get(`http://localhost:4000/api/friends/${userId}`, { // Added /api
+        .get(`https://chat-app-2-v2fo.onrender.com/api/friends/${userId}`, { // Added /api
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
