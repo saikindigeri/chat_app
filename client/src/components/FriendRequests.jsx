@@ -40,7 +40,7 @@ function FriendRequests({ userId, token }) {
         .then((res) => setPendingRequests(res.data.map((r) => r.receiver_id)))
         .catch((err) => console.error('Error fetching pending requests:', err));
     }
-  }, [token, userId,]);
+  }, [token, userId]);
 
   const sendRequest = async (receiverId) => {
     try {
@@ -99,7 +99,7 @@ function FriendRequests({ userId, token }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="bg-white rounded-lg  p-4">
       {/* Friend Requests Section */}
       <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
         <UserPlusIcon className="h-5 w-5 text-blue-500" />
@@ -146,49 +146,7 @@ function FriendRequests({ userId, token }) {
       </div>
 
       {/* Add Friends Section */}
-      <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-4 flex items-center gap-2">
-        <UserPlusIcon className="h-5 w-5 text-blue-500" />
-        Add Friends
-      </h3>
-      <div className="space-y-2 max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-        {users.length > 0 ? (
-          users
-            .filter((user) => user._id !== userId)
-            .map((user) => {
-              const isFriend = friends.includes(user._id);
-              const isPending = pendingRequests.includes(user._id);
-
-              return (
-                <div
-                  key={user._id}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-blue-200 rounded-full flex items-center justify-center text-blue-600 font-medium">
-                      {user.username.charAt(0).toUpperCase()}
-                    </div>
-                    <span className="text-gray-700 font-medium truncate">{user.username}</span>
-                  </div>
-                  <button
-                    onClick={() => sendRequest(user._id)}
-                    disabled={isFriend || isPending}
-                    className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                      isFriend || isPending
-                        ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                        : 'bg-blue-500 text-white hover:bg-blue-600'
-                    }`}
-                  >
-                    {isFriend ? 'Already Friends' : isPending ? 'Request Pending' : 'Add'}
-                  </button>
-                </div>
-              );
-            })
-        ) : (
-          <p className="text-gray-500 text-center py-2">Loading users...</p>
-        )}
-      </div>
+   
     </div>
   );
 }

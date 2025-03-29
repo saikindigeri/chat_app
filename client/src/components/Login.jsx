@@ -20,10 +20,12 @@ function Login() {
       const res = await axios.post('http://localhost:4000/login', { username, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('userId',res.data.userId);
+      localStorage.setItem("username",res.data.username)
       setToken(res.data.token);
       setUserId(res.data.userId);
-      console.log(res.data.token);
+      console.log(res.data);
       console.log(res.data.userId);
+
 
       navigate('/chat');
     } catch (err) {

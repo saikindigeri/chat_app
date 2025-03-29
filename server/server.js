@@ -442,6 +442,7 @@ const authenticateToken = (req, res, next) => {
   }
 };
 
+
 // User Registration
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
@@ -484,6 +485,23 @@ app.get('/users', authenticateToken, async (req, res) => {
     res.status(500).json({ message: 'Error fetching users' });
   }
 });
+
+// Get User Endpoint
+app.get('/current-user/:userId', async (req, res) => {
+  const { userId } = req.params; // Get userId from URL
+  try {
+    const user = await User.findById(userId, 'username'); // Fetch only username
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    console.log(user)
+    res.json({ username: user.username }); // Return username
+  } catch (err) {
+    console.error('Error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 
 // Send Friend Request
 app.post('/send-request', authenticateToken, async (req, res) => {

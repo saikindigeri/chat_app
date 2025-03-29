@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { motion } from 'framer-motion';
 import { UserIcon } from '@heroicons/react/24/solid';
 
 function FriendList({ setSelectedFriend, userId, token }) {
@@ -18,7 +18,7 @@ function FriendList({ setSelectedFriend, userId, token }) {
   }, [token, userId]);
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="bg-white rounded-lg p-4">
       {/* Header */}
       <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
         <UserIcon className="h-5 w-5 text-blue-500" />
