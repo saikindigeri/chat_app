@@ -91,7 +91,7 @@ function FriendRequests({ userId, token }) {
   return (
     <div className="bg-white rounded-lg  p-4">
       {/* Friend Requests Section */}
-      <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+      <h3 className="ttext-md sm:text-lg font-semibold text-black mb-2 flex items-center gap-1">
         <UserPlusIcon className="h-5 w-5 text-blue-500" />
         Friend Requests
       </h3>
