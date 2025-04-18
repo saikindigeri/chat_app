@@ -95,7 +95,7 @@ function FriendRequests({ userId, token }) {
         <UserPlusIcon className="h-5 w-5 text-blue-500" />
         Friend Requests
       </h3>
-      <div className="space-y-3 max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+      <div className="space-y-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
         {requests.length > 0 ? (
           requests.map((req) => (
             <div
