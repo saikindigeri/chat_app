@@ -1,10 +1,11 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Loading from './components/Loading';
-
+import './index.css'
 const Login = lazy(() => import('./components/Login'));
 const Register = lazy(() => import('./components/Register'));
 const Chat = lazy(() => import('./components/Chat'));
+
 
 function App() {
   return (

@@ -91,8 +91,8 @@ function FriendRequests({ userId, token }) {
   return (
     <div className="bg-white rounded-lg  p-4">
       {/* Friend Requests Section */}
-      <h3 className="ttext-md sm:text-lg font-semibold text-black mb-2 flex items-center gap-1">
-        <UserPlusIcon className="h-5 w-5 text-blue-500" />
+      <h3 className="ttext-md sm:text-lg font-semibold text-black mb-2 flex items-center gap-2">
+        <UserPlusIcon className="h-5 w-5 text-black" />
         Friend Requests
       </h3>
       <div className="space-y-3 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
@@ -131,7 +131,7 @@ function FriendRequests({ userId, token }) {
             </div>
           ))
         ) : (
-          <p className="text-gray-500 text-center py-2">No pending requests</p>
+          <p className="text-gray-500 text-center ">No pending requests</p>
         )}
       </div>
 

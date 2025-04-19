@@ -25,9 +25,9 @@ function FriendList({ setSelectedFriend }) {
   }, [token, userId]);
 
   return (
-    <div className="bg-white/80 backdrop-blur-md rounded-xl p-4 w-full shadow-lg">
+    <div className="bg-white/80 backdrop-blur-md rounded-xl p-4 w-full shadow-lg ">
       <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-        <UserIcon className="h-5 w-5 text-teal-500" />
+        <UserIcon className="h-5 w-5 text-black-" />
         Friends
       </h3>
       <div className="space-y-3   scrollbar-thin scrollbar-thumb-teal-300 scrollbar-track-gray-100">
@@ -44,9 +44,9 @@ function FriendList({ setSelectedFriend }) {
               tabIndex={0}
               aria-label={`Select friend ${friend.username || "Unknown"}`}
               onKeyPress={(e) => e.key === "Enter" && setSelectedFriend(friend)}
-              className="p-3 flex items-center gap-3 bg-white/50 rounded-lg border border-gray-200 hover:bg-gray-700 hover:text-white cursor-pointer transition-all duration-200"
+              className="p-3 flex items-center gap-3 bg-white/50 rounded-lg border border-gray-200 hover:bg-gray-200 hover:text-white cursor-pointer transition-all duration-200"
             >
-              <div className="w-10 h-10 rounded-full overflow-hidden bg-teal-100 flex items-center justify-center text-teal-700 font-medium">
+              <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center text-black font-medium">
                 {friend.avatar ? (
                   <img
                     src={friend.avatar}
@@ -60,7 +60,7 @@ function FriendList({ setSelectedFriend }) {
                   friend.username?.charAt(0).toUpperCase() || "?"
                 )}
               </div>
-              <span className="text-gray-800 font-semibold text-sm truncate">
+              <span className="text-gray-800  leading-3 gap-2">
                 {friend.username || "Unknown"}
               </span>
             </motion.div>

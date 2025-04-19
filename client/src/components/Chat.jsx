@@ -69,10 +69,10 @@ function AllUsers({ userId, token }) {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="p-3 flex items-center justify-between bg-white/50 rounded-lg border border-gray-200 hover:bg-teal-50 transition-colors"
+                className="p-3 flex items-center justify-between bg-white/50 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center text-teal-700 font-medium">
+                  <div className="w-10 h-10  rounded-full flex items-center justify-center text-black font-medium">
                     {user.username.charAt(0).toUpperCase()}
                     {/* Replace with Cloudinary avatar if available */}
                     {/* <img src={user.avatar} alt={user.username} className="w-10 h-10 rounded-full object-cover" /> */}
@@ -85,7 +85,7 @@ function AllUsers({ userId, token }) {
                   className={`px-3 py-1 rounded-full text-sm font-medium transition-all ${
                     isFriend || isPending
                       ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                      : "bg-teal-500 text-white hover:bg-teal-600 hover:shadow-md"
+                      : "bg-black text-white hover:bg-gray-600 hover:shadow-md"
                   }`}
                 >
                   {isFriend ? "Friends" : isPending ? "Pending" : "Add"}
@@ -159,7 +159,7 @@ function Chat() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 font-sans">
+    <div className="flex h-screen bg-gray-100 ">
       {/* Sidebar */}
       <motion.div
         initial={{ width: "4rem" }}
@@ -169,13 +169,13 @@ function Chat() {
       >
         <div className="flex justify-between items-center mb-6">
           <h2
-            className={`text-xl font-bold text-teal-600 ${!isSidebarExpanded && "hidden"}`}
+            className={`text-xl font-bold text-gray-900 ${!isSidebarExpanded && "hidden"}`}
           >
-            ChatSphere
+           Chatly
           </h2>
           <button
             onClick={() => setIsSidebarExpanded(!isSidebarExpanded)}
-            className="p-2 bg-teal-500 text-white rounded-full hover:bg-teal-600 transition-colors"
+            className="p-2  text-black rounded-full transition-colors"
             aria-label={isSidebarExpanded ? "Collapse sidebar" : "Expand sidebar"}
           >
             {isSidebarExpanded ? <XMarkIcon className="h-5 w-5" /> : <Bars3Icon className="h-5 w-5" />}
@@ -191,14 +191,15 @@ function Chat() {
               transition={{ duration: 0.2 }}
               className="flex-1 flex flex-col"
             >
-              <div className="flex items-center gap-3 p-3 bg-teal-50 rounded-lg mb-6">
-                <UserIcon className="h-6 w-6 text-teal-500" />
-                <span className="text-lg font-semibold text-gray-900">
-                  {name || "Loading..."}
+              <div className="flex items-center gap-3 p-3 bg-gray-100 rounded-lg mb-6">
+                <UserIcon className="h-6 w-6 text-black-500" />
+              
+                <span className="text-lg font-semibold text-gray-900 uppercase">
+               {name || "Loading..."}
                 </span>
               </div>
 
-              <div className="flex flex-col space-x-2 mb-6 bg-gray-100 p-1 rounded-lg">
+              <div className="flex flex-col space-x-2 mb-6  p-1 rounded-lg">
                 {[
                   { tab: "friends", icon: UserIcon, label: "Friends" },
                   { tab: "requests", icon: UserPlusIcon, label: "Requests" },
@@ -209,7 +210,7 @@ function Chat() {
                     onClick={() => setActiveTab(tab)}
                     className={`flex-1 py-2 px-3 rounded-md text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
                       activeTab === tab
-                        ? "bg-teal-500 text-white"
+                        ? "bg-red-500 text-white"
                         : "text-gray-600 hover:bg-gray-200"
                     }`}
                     aria-label={`Show ${label}`}
@@ -230,7 +231,7 @@ function Chat() {
 
               <button
                 onClick={handleLogout}
-                className="mt-6 w-full bg-black text-white py-2 rounded-lg hover:bg-teal-600 transition-colors flex items-center justify-center gap-2 text-sm font-medium"
+                className="mt-6 w-full bg-black text-white py-2 rounded-lg  transition-colors flex items-center justify-center gap-2 text-sm font-medium"
                 aria-label="Logout"
               >
                 <svg
@@ -255,12 +256,14 @@ function Chat() {
       </motion.div>
 
       {/* Chat Area */}
-      <div className="flex-1 flex flex-col h-screen bg-white/80 backdrop-blur-md">
+      <div className="flex-1 flex flex-col h-screen bg-white-500/80 backdrop-blur-md">
         {selectedFriend ? (
           <>
-            <div className="p-4 bg-teal-600 text-white text-lg font-semibold flex-shrink-0 shadow-md">
-              Chat with {selectedFriend.username}
-            </div>
+            <div
+  className="p-4 bg-blue-800 backdrop-blur-md text-white text-lg font-semibold flex-shrink-0 shadow-md border-b border-white/20 border-t-0 border-l-0 border-r-0"
+>
+  Chat with <span className="uppercase">{selectedFriend.username}</span>
+</div>
             <div className="flex-1 p-6 overflow-y-auto flex flex-col gap-4 scrollbar-thin scrollbar-thumb-teal-300 scrollbar-track-gray-100">
               <AnimatePresence>
                 {messages.length > 0 ? (
@@ -272,12 +275,12 @@ function Chat() {
                       transition={{ duration: 0.3 }}
                       className={`p-4 rounded-xl max-w-[70%] shadow-sm ${
                         String(msg.sender_id) === String(userId)
-                          ? "bg-teal-500 text-white self-end border border-teal-400"
+                          ? "bg-blue-500 text-white self-end border border-blue-400"
                           : "bg-white text-gray-800 self-start border border-gray-200"
                       }`}
                     >
-                      <p className="text-sm font-medium">{msg.text}</p>
-                      <span className="text-xs text-gray-400 mt-1 block">
+                      <p className="text-md font-medium">{msg.text}</p>
+                      <span className="text-xs text-black mt-1 block">
                         {new Date(msg.created_at).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit",
@@ -304,13 +307,13 @@ function Chat() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-                  className="w-full p-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white text-gray-800 placeholder-gray-400 text-sm font-medium transition-all duration-200"
+                  className="w-full p-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-500 bg-white text-gray-800 placeholder-gray-400 text-sm font-medium transition-all duration-200"
                   placeholder="Type a message..."
                   aria-label="Message input"
                 />
                 <button
                   onClick={sendMessage}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-teal-500 text-white rounded-full hover:bg-teal-600 transition-colors"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-gray-900 text-white rounded-full transition-colors"
                   aria-label="Send message"
                 >
                   <PaperAirplaneIcon className="h-5 w-5" />
