@@ -12,18 +12,24 @@ const messageRoutes = require('./routes/messages');
 const setupSocket = require('./socket/socket');
 
 const app = express();
+app.use(cors({
+  origin: "https://chat-app.ksai.live", // or "*" for all origins (not recommended for production)
+  methods: ["GET", "POST"],
+  credentials: true
+}));
+
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: ['https://chat-app.ksai.live', 'http://localhost:3000'],
     methods: ['GET', 'POST'],
+    credentials: true,
   },
 });
-
 const PORT = process.env.PORT || 4000;
 
 // Middleware
-app.use(cors());
+
 app.use(express.json());
 
 // Connect to MongoDB
