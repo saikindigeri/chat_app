@@ -13,7 +13,7 @@ const setupSocket = require('./socket/socket');
 
 const app = express();
 app.use(cors({
-  origin: "https://chat-app.ksai.live", // or "*" for all origins (not recommended for production)
+  origin:[ "https://chat-app.ksai.live", 'http://localhost:3000'], // or "*" for all origins (not recommended for production)
   methods: ["GET", "POST"],
   credentials: true
 }));
