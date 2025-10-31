@@ -1,335 +1,336 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import io from "socket.io-client";
 import axios from "axios";
 import FriendList from "./FriendList";
 import FriendRequests from "./FriendRequests";
-import { UserIcon, UserPlusIcon, UsersIcon, Bars3Icon, XMarkIcon, PaperAirplaneIcon } from "@heroicons/react/24/solid";
+import {
+  UserIcon,
+  UserPlusIcon,
+  UsersIcon,
+  PaperAirplaneIcon,
+  Bars3Icon,
+  XMarkIcon,
+  ArrowLeftIcon,
+} from "@heroicons/react/24/solid";
 
 const socket = io("https://chat-app-2-v2fo.onrender.com");
 
 function AllUsers({ userId, token }) {
   const [users, setUsers] = useState([]);
   const [friends, setFriends] = useState([]);
-  const [pendingRequests, setPendingRequests] = useState([]);
+  const [pending, setPending] = useState([]);
 
   useEffect(() => {
-    if (token && userId) {
-      axios
-        .get("https://chat-app-2-v2fo.onrender.com/api/users", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((res) => setUsers(res.data.filter((u) => u._id !== userId)))
-        .catch((err) => console.error("Error fetching users:", err));
-    }
+    if (!token || !userId) return;
+    axios
+      .get("https://chat-app-2-v2fo.onrender.com/api/users", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((r) => setUsers(r.data.filter((u) => u._id !== userId)))
+      .catch(() => {});
   }, [token, userId]);
 
-  const sendRequest = async (receiverId) => {
+  const sendRequest = async (id) => {
     try {
-      const res = await axios.post(
+      await axios.post(
         "https://chat-app-2-v2fo.onrender.com/api/send-request",
-        { receiverId },
+        { receiverId: id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      if (res.status === 201) {
-        setPendingRequests((prev) => [...prev, receiverId]);
-        alert("Friend request sent!");
-      }
-    } catch (err) {
-      const message = err.response?.data?.message;
-      if (message === "You are already friends") {
-        setFriends((prev) => [...prev, receiverId]);
-        alert("You are already friends!");
-      } else if (message === "Friend request already pending") {
-        setPendingRequests((prev) => [...prev, receiverId]);
-        alert("Friend request already pending!");
-      } else {
-        console.error("Error sending friend request:", err);
-        alert("Error sending friend request");
-      }
+      setPending((p) => [...p, id]);
+    } catch (e) {
+      const msg = e.response?.data?.message;
+      if (msg === "You are already friends") setFriends((f) => [...f, id]);
+      else if (msg === "Friend request already pending") setPending((p) => [...p, id]);
     }
   };
 
   return (
-    <div className="bg-white/80 backdrop-blur-md rounded-xl h-[360px] p-4 w-full shadow-lg max-h-[50vh] sm:max-h-[60vh] overflow-y-auto">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-        <UserPlusIcon className="h-5 w-5 text-black" />
-        Add Friends
+    <div className="space-y-3 p-4">
+      <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+        <UsersIcon className="w-5 h-5 text-gray-600" />
+        Discover
       </h3>
-      <div className="space-y-3 overflow-y-auto scrollbar-thin scrollbar-thumb-teal-300 scrollbar-track-gray-100">
-        {users.length > 0 ? (
-          users.map((user) => {
-            const isFriend = friends.includes(user._id);
-            const isPending = pendingRequests.includes(user._id);
-
-            return (
-              <motion.div
-                key={user._id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="p-3 flex items-center justify-between bg-white/50 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-black font-medium text-sm sm:text-base">
-                    {user.username.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="text-gray-800 font-medium text-xs sm:text-sm truncate">{user.username}</span>
+      {users.length ? (
+        users.map((u) => {
+          const isFriend = friends.includes(u._id);
+          const isPending = pending.includes(u._id);
+          return (
+            <motion.div
+              key={u._id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center justify-between p-3 bg-white rounded-xl shadow-sm border"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gray-500 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                  {u.username[0].toUpperCase()}
                 </div>
-                <button
-                  onClick={() => sendRequest(user._id)}
-                  disabled={isFriend || isPending}
-                  className={`px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-medium transition-all ${
-                    isFriend || isPending
-                      ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                      : "bg-black text-white hover:bg-gray-600 hover:shadow-md"
-                  }`}
-                >
-                  {isFriend ? "Friends" : isPending ? "Pending" : "Add"}
-                </button>
-              </motion.div>
-            );
-          })
-        ) : (
-          <p className="text-gray-500 text-center py-4 text-xs sm:text-sm">Loading users...</p>
-        )}
-      </div>
+                <span className="font-medium text-gray-800">{u.username}</span>
+              </div>
+              <button
+                onClick={() => sendRequest(u._id)}
+                disabled={isFriend || isPending}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  isFriend
+                    ? "bg-gray-300 text-gray-600"
+                    : isPending
+                    ? "bg-yellow-100 text-yellow-700"
+                    : "bg-gray-600 text-white hover:bg-gray-700"
+                }`}
+              >
+                {isFriend ? "Friends" : isPending ? "Pending" : "Add"}
+              </button>
+            </motion.div>
+          );
+        })
+      ) : (
+        <p className="text-center text-gray-500 py-8">No users found</p>
+      )}
     </div>
   );
 }
 
-function Chat() {
+export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [selectedFriend, setSelectedFriend] = useState(null);
-  const [token] = useState(localStorage.getItem("token"));
-  const [userId] = useState(localStorage.getItem("userId"));
+  const [token] = useState(localStorage.getItem("token") || "");
+  const [userId] = useState(localStorage.getItem("userId") || "");
   const [activeTab, setActiveTab] = useState("friends");
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
-  const name = localStorage.getItem("username");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const name = localStorage.getItem("username") || "User";
+
+  const inputRef = useRef(null);
   const messagesEndRef = useRef(null);
 
+  // Auth + Socket
   useEffect(() => {
     if (!token) return (window.location.href = "/login");
     socket.emit("join", userId);
-
-    socket.on("chat message", (msg) => {
-      console.log("Received msg:", msg);
-      setMessages((prev) => [...prev, msg]);
-    });
-
+    socket.on("chat message", (msg) => setMessages((p) => [...p, msg]));
     return () => socket.off("chat message");
   }, [token, userId]);
 
+  // Load messages
   useEffect(() => {
     if (selectedFriend) {
       axios
         .get(`https://chat-app-2-v2fo.onrender.com/api/messages/${selectedFriend._id}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
-        .then((res) => {
-          console.log("Fetched messages:", res.data);
-          setMessages(res.data);
-        })
-        .catch((err) => console.error("Error fetching messages:", err));
+        .then((r) => setMessages(r.data))
+        .catch(() => setMessages([]));
     }
   }, [selectedFriend, token]);
 
+  // Focus input only when chat opens (no re-focus on typing)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    if (selectedFriend && inputRef.current) {
+      const timer = setTimeout(() => inputRef.current.focus(), 150);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedFriend]);
+
+  // Auto-scroll to bottom (smooth, works on all screens)
+  const scrollToBottom = useCallback(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, scrollToBottom]);
 
   const sendMessage = () => {
     if (input.trim() && selectedFriend) {
       const msg = { sender_id: userId, receiver_id: selectedFriend._id, text: input };
-      console.log("Sending msg:", msg);
       socket.emit("chat message", msg);
       setInput("");
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("username");
+  const logout = () => {
+    localStorage.clear();
     window.location.href = "/login";
   };
 
-  return (
-    <div className="flex flex-col sm:flex-row min-h-screen bg-gray-100">
-      {/* Sidebar */}
-      <motion.div
-        initial={{ width: "4rem" }}
-        animate={{ width: isSidebarExpanded ? "100%" : "4rem", maxWidth: isSidebarExpanded ? "20rem" : "4rem" }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="bg-white/90 backdrop-blur-md shadow-xl p-4 flex flex-col fixed top-0 left-0 h-full z-20 sm:static sm:w-auto sm:min-w-[4rem] sm:max-w-1/2"
-      >
-        <div className="flex justify-between items-center mb-4 sm:mb-6">
-          <h2
-            className={`text-lg sm:text-xl font-bold text-gray-900 ${!isSidebarExpanded && "hidden"}`}
-          >
-            Chatly
-          </h2>
-          <button
-            onClick={() => setIsSidebarExpanded(!isSidebarExpanded)}
-            className="text-black rounded-full transition-colors p-1"
-            aria-label={isSidebarExpanded ? "Collapse sidebar" : "Expand sidebar"}
-          >
-            {isSidebarExpanded ? <XMarkIcon className="h-5 w-5" /> : <Bars3Icon className="h-5 w-5" />}
-          </button>
-        </div>
+  const tabs = [
+    { id: "friends", icon: UserIcon, label: "Chats" },
+    { id: "requests", icon: UserPlusIcon, label: "Requests" },
+    { id: "allUsers", icon: UsersIcon, label: "Users" },
+  ];
 
-        <AnimatePresence>
-          {isSidebarExpanded && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="flex-1 flex flex-col h-full"
-            >
-              <div className="flex items-center gap-3 p-3 bg-gray-100 rounded-lg mb-4 sm:mb-6">
-                <UserIcon className="h-5 w-5 sm:h-6 sm:w-6 text-black" />
-                <span className="text-base sm:text-lg font-semibold text-gray-900 uppercase truncate">
-                  {name || "Loading..."}
-                </span>
-              </div>
 
-              <div className="flex flex-row sm:flex-col gap-2 mb-4 sm:mb-6 p-1 rounded-lg">
-                {[
-                  { tab: "friends", icon: UserIcon, label: "Friends" },
-                  { tab: "requests", icon: UserPlusIcon, label: "Requests" },
-                  { tab: "allUsers", icon: UsersIcon, label: "All Users" },
-                ].map(({ tab, icon: Icon, label }) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`flex-1 py-2 px-2 sm:px-3 rounded-md text-xs sm:text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
-                      activeTab === tab
-                        ? "bg-red-500 text-white"
-                        : "text-gray-600 hover:bg-gray-200"
-                    }`}
-                    aria-label={`Show ${label}`}
-                  >
-                    <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
-                    <span className="sm:inline">{label}</span>
-                  </button>
-                ))}
-              </div>
-
-              <div className="flex-1 overflow-y-auto">
-                {activeTab === "requests" && <FriendRequests userId={userId} token={token} />}
-                {activeTab === "friends" && (
-                  <FriendList setSelectedFriend={setSelectedFriend} userId={userId} token={token} />
-                )}
-                {activeTab === "allUsers" && <AllUsers userId={userId} token={token} />}
-              </div>
-
-              <button
-                onClick={handleLogout}
-                className="mt-4 sm:mt-6 w-full bg-black text-white py-2 rounded-lg transition-colors flex items-center justify-center gap-2 text-xs sm:text-sm font-medium"
-                aria-label="Logout"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 sm:h-5 sm:w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                  />
-                </svg>
-                Logout
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
-
-      {/* Chat Area */}
-      <div className="flex-1 flex flex-col h-screen sm:ml-0">
-        {selectedFriend ? (
-          <>
-            <div className="p-3 sm:p-4 bg-black text-white text-base sm:text-lg font-semibold flex-shrink-0 shadow-md border-b border-white/20">
-              Chat with <span className="uppercase">{selectedFriend.username}</span>
-            </div>
-            <div className="flex-1 p-3 sm:p-6 overflow-y-auto flex flex-col gap-3 sm:gap-4 scrollbar-thin scrollbar-thumb-teal-300 scrollbar-track-gray-100">
-              <AnimatePresence>
-                {messages.length > 0 ? (
-                  messages.map((msg, idx) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className={`p-3 sm:p-4 rounded-xl max-w-[80%] sm:max-w-[70%] shadow-sm ${
-                        String(msg.sender_id) === String(userId)
-                          ? "bg-blue-500 text-white self-end border border-blue-400"
-                          : "bg-white text-gray-800 self-start border border-gray-200"
-                      }`}
-                    >
-                      <p className="text-sm sm:text-md font-medium">{msg.text}</p>
-                      <span className={`text-xs text-black mt-1 block ${
-                        String(msg.sender_id) === String(userId)
-                          ? " text-white "
-                          : " text-gray-800 "
-                      }`}>
-                        {new Date(msg.created_at).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </span>
-                    </motion.div>
-                  ))
-                ) : (
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-gray-500 text-center py-4 text-xs sm:text-sm font-medium"
-                  >
-                    No messages yet—start chatting!
-                  </motion.p>
-                )}
-              </AnimatePresence>
-              <div ref={messagesEndRef} />
-            </div>
-            <div className="p-3 sm:p-4 bg-white flex flex-shrink-0 shadow-md border-t border-gray-200">
-              <div className="relative flex-1">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-                  className="w-full p-2 sm:p-3 pr-10 sm:pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-500 bg-white text-gray-800 placeholder-gray-400 text-xs sm:text-sm font-medium transition-all duration-200"
-                  placeholder="Type a message..."
-                  aria-label="Message input"
-                />
-                <button
-                  onClick={sendMessage}
-                  className="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 p-1 sm:p-2 bg-gray-900 text-white rounded-full transition-colors"
-                  aria-label="Send message"
-                >
-                  <PaperAirplaneIcon className="h-4 w-4 sm:h-5 sm:w-5" />
-                </button>
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="flex-1 flex items-center justify-center bg-white/80">
-            <p className="text-gray-500 text-base sm:text-lg font-medium">
-              Select a friend to start chatting!
-            </p>
-          </div>
-        )}
+return (
+  <div className="flex h-screen bg-gray-50 overflow-hidden">
+    {/* ===== SIDEBAR ===== */}
+    <div
+      className={`
+        fixed md:relative inset-y-0 left-0 z-50 w-80 bg-white flex flex-col
+        transform transition-transform duration-300 ease-in-out
+        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+        border-r border-gray-200
+      `}
+    >
+      {/* Header */}
+      <div className="p-4  border-gray-200 flex justify-between items-center">
+        <h1 className="text-xl font-bold text-gray-800">Chatly</h1>
+        <button onClick={() => setIsSidebarOpen(false)} className="md:hidden">
+          <XMarkIcon className="w-6 h-6 text-gray-600" />
+        </button>
       </div>
-    </div>
-  );
-}
 
-export default Chat;
+      {/* User */}
+      <div className="p-4 flex items-center gap-3">
+        <div className="w-10 h-10 bg-gray-600 text-white rounded-full flex items-center justify-center font-bold">
+          {name[0].toUpperCase()}
+        </div>
+        <span className="font-medium text-gray-800">{name}</span>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-1 p-2 bg-gray-100 mx-4 rounded-lg">
+        {tabs.map(({ id, icon: Icon, label }) => (
+          <button
+            key={id}
+            onClick={() => {
+              setActiveTab(id);
+              setIsSidebarOpen(false);
+            }}
+            className={`flex-1 flex items-center justify-center gap-2 py-2 px-2 rounded-lg text-sm font-medium transition-all ${
+              activeTab === id ? "bg-gray-600 text-white" : "text-gray-600 hover:bg-gray-200"
+            }`}
+          >
+            <Icon className="w-5 h-5" />
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {/* List */}
+      <div className="flex-1 overflow-y-auto p-4">
+        {activeTab === "friends" && (
+          <FriendList setSelectedFriend={setSelectedFriend} userId={userId} token={token} />
+        )}
+        {activeTab === "requests" && <FriendRequests userId={userId} token={token} />}
+        {activeTab === "allUsers" && <AllUsers userId={userId} token={token} />}
+      </div>
+
+      {/* Logout */}
+      <button
+        onClick={logout}
+        className="m-4 p-2 bg-black text-white rounded-lg text-sm font-medium"
+      >
+        Logout
+      </button>
+    </div>
+
+    {/* Overlay */}
+    {isSidebarOpen && (
+      <div
+        className="fixed inset-0 bg-black/50 z-40 md:hidden"
+        onClick={() => setIsSidebarOpen(false)}
+      />
+    )}
+
+    {/* ===== MAIN CHAT (No overflow, full width) ===== */}
+    <div className="flex-1 flex flex-col md:ml-0 min-w-0">
+      {selectedFriend ? (
+        <>
+          {/* Chat Header */}
+          <div className="flex items-center gap-3 p-3 ml-8  bg-white border-b border-gray-200">
+            <button onClick={() => setSelectedFriend(null)} className={`${isSidebarOpen?'':'hidden '} md:hidden`}>
+              <ArrowLeftIcon className="w-6 h-6 text-gray-700" />
+            </button>
+            <div className="w-10 h-10 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
+              {selectedFriend.username[0].toUpperCase()}
+            </div>
+            <div>
+              <p className="font-semibold text-gray-800">{selectedFriend.username}</p>
+              <p className="text-xs text-green-600">Online</p>
+            </div>
+          </div>
+
+          {/* Messages – Critical Fix */}
+          <div className="flex-1 overflow-y-auto bg-gray-50 p-4 space-y-3 pb-[env(safe-area-inset-bottom,1rem)] min-w-0">
+            {messages.length ? (
+              messages.map((m) => (
+                <div
+                  key={m._id}
+                  className={`flex ${m.sender_id === userId ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-xs px-4 py-2 rounded-2xl shadow-sm break-words ${
+                      m.sender_id === userId
+                        ? "bg-black text-white"
+                        : "bg-white text-gray-800 border border-gray-300"
+                    }`}
+                  >
+                    <p className="text-sm">{m.text}</p>
+                    <p className="text-xs mt-1 opacity-70">
+                      {new Date(m.created_at).toLocaleTimeString([], {
+                        hour: "numeric",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-gray-500">Start chatting!</p>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (input.trim()) sendMessage();
+            }}
+            className="p-4 bg-white border-t border-gray-200"
+          >
+            <div className="flex gap-2 items-center">
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Type a message..."
+                className="flex-1 px-4 py-3 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-1 focus:ring-black placeholder-gray-500 min-w-0"
+              />
+              <button
+                type="submit"
+                disabled={!input.trim()}
+                className="p-3 bg-black text-white rounded-full hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
+              >
+                <PaperAirplaneIcon className="w-5 h-5" />
+              </button>
+            </div>
+          </form>
+        </>
+      ) : (
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+      
+          <p className="text-lg font-medium text-gray-600">
+            {activeTab === "friends" && "Select a friend to start"}
+            {activeTab === "requests" && "Check requests"}
+            {activeTab === "allUsers" && "Add friends"}
+          </p>
+        </div>
+      )}
+    </div>
+
+    {/* Hamburger */}
+    <button
+      onClick={() => setIsSidebarOpen(true)}
+      className={`fixed top-4 mr-2 z-50 px-4   ${isSidebarOpen?'hidden':''} md:hidden`}
+    >
+      <Bars3Icon className="w-6 h-6 text-gray-700" />
+    </button>
+  </div>
+);
+  
+}

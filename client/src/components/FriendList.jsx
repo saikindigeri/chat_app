@@ -25,12 +25,12 @@ function FriendList({ setSelectedFriend }) {
   }, [token, userId]);
 
   return (
-    <div className="bg-white/80 backdrop-blur-md h-[360px] rounded-xl p-4 w-full shadow-lg ">
+    <div className="bg-white/80 backdrop-blur-md h-[360px] rounded-xl p-4 w-full ">
       <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
         <UserIcon className="h-5 w-5 text-black-" />
-        Friends
+        Friends 
       </h3>
-      <div className="space-y-3   scrollbar-thin scrollbar-thumb-teal-300 scrollbar-track-gray-100">
+      <div className="space-y-3   scrollbar-thin scrollbar-thumb-black-300 scrollbar-track-gray-100">
         {friends.length > 0 ? (
           friends.map((friend, index) => (
             <motion.div
