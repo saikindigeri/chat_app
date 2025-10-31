@@ -50,7 +50,7 @@ function AllUsers({ userId, token }) {
   return (
     <div className="space-y-3 p-4">
       <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-        <UsersIcon className="w-5 h-5 text-gray-600" />
+        <UsersIcon className="w-5 h-5 text-black" />
         Discover
       </h3>
       {users.length ? (
@@ -176,7 +176,7 @@ return (
     >
       {/* Header */}
       <div className="p-4  border-gray-200 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-gray-800">Chatly</h1>
+        <h1 className="text-xl font-bold font-sans text-gray-800">Chatly</h1>
         <button onClick={() => setIsSidebarOpen(false)} className="md:hidden">
           <XMarkIcon className="w-6 h-6 text-gray-600" />
         </button>

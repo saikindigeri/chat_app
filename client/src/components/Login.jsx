@@ -34,9 +34,9 @@ function Login() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <form onSubmit={handleLogin} className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+    <div className="flex items-center justify-center w-full min-h-screen">
+      <form onSubmit={handleLogin} className=" p-6 rounded-lg  w-full max-w-sm">
+        <h2 className="text-2xl font-bold mb-4  font-inter text-center">Login</h2>
         <input
           type="text"
           value={username}
@@ -51,11 +51,11 @@ function Login() {
           placeholder="Password"
           className="w-full p-2 mb-4 border rounded"
         />
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+        <button type="submit" className="w-full bg-black text-white p-2 rounded hover:bg-gray-600">
           Login
         </button>
-        <p className="mt-2 text-center">
-          New user? <a href="/register" className="text-blue-500">Register</a>
+        <p className="mt-2 text-center font-segoe">
+          New user? <a href="/register" className="text-black">Register</a>
         </p>
       </form>
     </div>

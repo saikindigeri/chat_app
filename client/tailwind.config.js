@@ -11,7 +11,13 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ['DM Sans', 'sans-serif'],
+         sans: ['"DM Sans"', '"Bricolage Grotesque"', 'sans-serif'],
+
+       // Headings – Instrument Serif 600
+       display: [ '"Bricolage Grotesque "', 'serif'],
+       
+         segoe: ['Instrument Serif', 'sans-serif'],
+      inter: ['Inter', 'sans-serif'],
       },
     },
   },

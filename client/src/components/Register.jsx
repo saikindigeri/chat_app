@@ -19,7 +19,7 @@ function Register() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <form onSubmit={handleRegister} className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+      <form onSubmit={handleRegister} className=" p-6 rounded-lg  w-full max-w-sm">
         <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
         <input
           type="text"
@@ -35,11 +35,11 @@ function Register() {
           placeholder="Password"
           className="w-full p-2 mb-4 border rounded"
         />
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+        <button type="submit" className="w-full bg-black text-white p-2 rounded hover:bg-gray-600">
           Register
         </button>
         <p className="mt-2 text-center">
-          Already have an account? <a href="/login" className="text-blue-500">Login</a>
+          Already have an account? <a href="/login" className="text-gray-500">Login</a>
         </p>
       </form>
     </div>

@@ -1,5 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
+
+import toast, { Toaster } from 'react-hot-toast';
 import Loading from './components/Loading';
 import './index.css'
 import Home from './components/Home';
@@ -12,6 +14,8 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Suspense fallback={<Loading />}>
+      <div><Toaster  position="top-right"
+  reverseOrder={false}/></div>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

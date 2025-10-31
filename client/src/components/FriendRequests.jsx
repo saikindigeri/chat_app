@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { UserPlusIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import toast from 'react-hot-toast';
 
 function FriendRequests({ userId, token }) {
   const [requests, setRequests] = useState([]); // Received friend requests
@@ -69,7 +70,7 @@ function FriendRequests({ userId, token }) {
         const acceptedRequest = requests.find((r) => r._id === requestId);
         setFriends((prev) => [...prev, acceptedRequest.sender_id]);
         setRequests((prev) => prev.filter((r) => r._id !== requestId));
-        alert('Friend request accepted!');
+       toast.success("Friend Request Accepted")
       })
       .catch((err) => console.error('Error accepting request:', err));
   };
@@ -83,7 +84,7 @@ function FriendRequests({ userId, token }) {
       )
       .then(() => {
         setRequests((prev) => prev.filter((r) => r._id !== requestId));
-        alert('Friend request declined!');
+          toast.error("Friend Request declined")
       })
       .catch((err) => console.error('Error declining request:', err));
   };
@@ -117,7 +118,7 @@ function FriendRequests({ userId, token }) {
               <div className="flex gap-2">
                 <button
                   onClick={() => acceptRequest(req._id)}
-                  className="p-1 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors"
+                  className="p-1 bg-black text-white rounded-full hover:bg-gray-600 transition-colors"
                 >
                   <CheckIcon className="h-5 w-5" />
                 </button>
