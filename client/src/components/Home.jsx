@@ -16,9 +16,9 @@ const Home = () => {
         {/* Chat Icon */}
         <div className="flex justify-center">
           <div className="relative">
-            <MessageCircle className="w-20 h-20 text-black animate-pulse" />
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-700 rounded-full animate-ping"></div>
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-400 rounded-full"></div>
+            <MessageCircle className="w-10 h-10 text-black animate-pulse" />
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-ping"></div>
+            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-700 rounded-full"></div>
           </div>
         </div>
 
